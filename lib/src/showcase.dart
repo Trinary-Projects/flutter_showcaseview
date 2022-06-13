@@ -40,6 +40,14 @@ class Showcase extends StatefulWidget {
   final Widget child;
   final String? title;
   final String? description;
+  final int? currentstep;
+  final Widget? nextbutton;
+  final Widget? skipbutton;
+  String? ScreenName;
+  bool? isCenter;
+  bool? isBottom;
+  final int? totalstep;
+//  final VoidCallback? onFinish;
   final ShapeBorder? shapeBorder;
   final BorderRadius? radius;
   final TextStyle? titleTextStyle;
@@ -68,9 +76,17 @@ class Showcase extends StatefulWidget {
   ///
   final double? blurValue;
 
-  const Showcase({
+  Showcase({
     required this.key,
     required this.child,
+    this.currentstep,
+    this.totalstep,
+    // this.onFinish,
+    this.ScreenName='default',
+    this.isBottom = false,
+    this.isCenter = false,
+    this.skipbutton,
+    this.nextbutton,
     this.title,
     required this.description,
     this.shapeBorder,
@@ -107,12 +123,19 @@ class Showcase extends StatefulWidget {
                 : (onTargetClick == null ? false : true),
             "onTargetClick is required if you're using disposeOnTap");
 
-  const Showcase.withWidget({
+  Showcase.withWidget({
     required this.key,
     required this.child,
     required this.container,
     required this.height,
     required this.width,
+    this.isBottom = false,
+    this.isCenter = false,
+    this.totalstep,
+    this.currentstep,
+    this.nextbutton,
+    this.ScreenName='default',
+    this.skipbutton,
     this.title,
     this.description,
     this.shapeBorder,
@@ -273,7 +296,7 @@ class _ShowcaseState extends State<Showcase> with TickerProviderStateMixin {
         ? Stack(
             children: [
               GestureDetector(
-                onTap: _nextIfAny,
+               // onTap: _nextIfAny,
                 child: ClipPath(
                   clipper: RRectClipper(
                     area: rectBound,
@@ -312,6 +335,8 @@ class _ShowcaseState extends State<Showcase> with TickerProviderStateMixin {
                 offset: offset,
                 screenSize: screenSize,
                 title: widget.title,
+                isBottom: widget.isBottom,
+                isCenter: widget.isCenter,
                 description: widget.description,
                 animationOffset: _slideAnimation,
                 titleTextStyle: widget.titleTextStyle,
@@ -324,6 +349,14 @@ class _ShowcaseState extends State<Showcase> with TickerProviderStateMixin {
                 contentWidth: widget.width,
                 onTooltipTap: _getOnTooltipTap,
                 contentPadding: widget.contentPadding,
+                // currentstep: widget.currentstep!,
+                // totalstep: widget.totalstep!,
+                // onFinish: widget.onFinish!,
+                nextbutton: widget.nextbutton!,
+                skipbutton: widget.skipbutton!,
+                currentstep: widget.currentstep,
+                totalstep: widget.totalstep,
+                ScreenName: widget.ScreenName,
               ),
             ],
           )

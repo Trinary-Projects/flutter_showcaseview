@@ -29,6 +29,11 @@ import 'measure_size.dart';
 
 class ToolTipWidget extends StatefulWidget {
   final GetPosition? position;
+  final int? currentstep;
+  final int? totalstep;
+  //final VoidCallback? onFinish;
+  bool? isCenter;
+  bool? isBottom;
   final Offset? offset;
   final Size? screenSize;
   final String? title;
@@ -37,6 +42,9 @@ class ToolTipWidget extends StatefulWidget {
   final TextStyle? titleTextStyle;
   final TextStyle? descTextStyle;
   final Widget? container;
+  final Widget? nextbutton;
+  final Widget? skipbutton;
+  final String? ScreenName;
   final Color? tooltipColor;
   final Color? textColor;
   final bool showArrow;
@@ -45,12 +53,21 @@ class ToolTipWidget extends StatefulWidget {
   static late bool isArrowUp;
   final VoidCallback? onTooltipTap;
   final EdgeInsets? contentPadding;
-
   ToolTipWidget(
       {this.position,
+      // this.currentstep,
+      // this.totalstep,
+      // this.onFinish,
+      required this.currentstep,
+      required this.totalstep,
+      this.isCenter,
+      this.isBottom,
+      this.skipbutton,
       this.offset,
       this.screenSize,
       this.title,
+      this.nextbutton,
+      this.ScreenName,
       this.description,
       this.animationOffset,
       this.titleTextStyle,
@@ -356,6 +373,78 @@ class _ToolTipWidgetState extends State<ToolTipWidget> {
               ),
             ),
           ),
+          if (widget.isCenter!)
+            Positioned(
+                left: MediaQuery.of(context).size.width / 4,
+                top: MediaQuery.of(context).size.height / 2,
+                child: Column(
+                  children: [
+                    widget.nextbutton!,
+                    SizedBox(
+                      height: 20,
+                    ),
+                    if (widget.currentstep != widget.totalstep!)
+                      widget.skipbutton!,
+                  ],
+                ))
+          else if (widget.isBottom!)
+            if (widget.currentstep != widget.totalstep)
+              Positioned(
+                  left: MediaQuery.of(context).size.width / 4,
+                  bottom: 50,
+                  child: Column(
+                    children: [
+                      widget.nextbutton!,
+                      SizedBox(
+                        height: 20,
+                      ),
+                      if (widget.currentstep != widget.totalstep!)
+                        widget.skipbutton!,
+                    ],
+                  ))
+            else
+              Positioned(
+                  left: MediaQuery.of(context).size.width / 4,
+                  bottom: MediaQuery.of(context).size.height / 2,
+                  child: Column(
+                    children: [
+                      widget.nextbutton!,
+                      SizedBox(
+                        height: 20,
+                      ),
+                      if (widget.currentstep != widget.totalstep!)
+                        widget.skipbutton!,
+                    ],
+                  ))
+          else if (widget.ScreenName == 'Dashboard')
+            if (widget.currentstep != widget.totalstep)
+              Positioned(
+                  left: MediaQuery.of(context).size.width / 4,
+                  top: MediaQuery.of(context).size.height / 2.5,
+                  child: Column(
+                    children: [
+                      widget.nextbutton!,
+                      SizedBox(
+                        height: 20,
+                      ),
+                      if (widget.currentstep != widget.totalstep!)
+                        widget.skipbutton!,
+                    ],
+                  ))
+            else
+              Positioned(
+                  left: MediaQuery.of(context).size.width / 4,
+                  bottom: 50,
+                  child: Column(
+                    children: [
+                      widget.nextbutton!,
+                      SizedBox(
+                        height: 20,
+                      ),
+                      if (widget.currentstep != widget.totalstep!)
+                        widget.skipbutton!,
+                    ],
+                  ))
         ],
       );
     }
@@ -418,3 +507,70 @@ class _Arrow extends CustomPainter {
         oldDelegate.strokeWidth != strokeWidth;
   }
 }
+
+// Widget nextButton(
+//     BuildContext context, int currentStep, int totalSteps, Function? onFinish) {
+//   return ClipRRect(
+//     borderRadius: const BorderRadius.all(Radius.circular(30)),
+//     child: BackdropFilter(
+//       filter: ImageFilter.blur(
+//         sigmaX: 60.0,
+//         sigmaY: 60.0,
+//       ),
+//       child: Container(
+//         width: 180,
+//         height: 40,
+//         decoration: BoxDecoration(
+//           border: Border.all(
+//             color: Colors.white,
+//             width: 2,
+//           ),
+//           color: Colors.black.withOpacity(0.25),
+//           shape: BoxShape.rectangle,
+//           borderRadius: const BorderRadius.all(
+//             Radius.circular(30),
+//           ),
+//         ),
+//         child: TextButton(
+//           child: Text(
+//             currentStep != totalSteps ? 'Next' : 'Finish',
+//             style: Theme.of(context)
+//                 .textTheme
+//                 .bodyText2!
+//                 .copyWith(fontWeight: FontWeight.w400, color: Colors.white),
+//           ),
+//           onPressed: () {
+//             if (currentStep == totalSteps && onFinish != null) {
+//               onFinish();
+//             }
+//             ShowCaseWidget.of(context)!.next();
+//           },
+//         ),
+//       ),
+//     ),
+//   );
+// }
+// Widget skipButton(BuildContext context) {
+//   return Container(
+//     width: 180,
+//     height: 40,
+//     decoration: const BoxDecoration(
+//       shape: BoxShape.rectangle,
+//       borderRadius: BorderRadius.all(
+//         Radius.circular(30),
+//       ),
+//     ),
+//     child: TextButton(
+//       child: Text(
+//         'Skip',
+//         style: Theme.of(context)
+//             .textTheme
+//             .bodyText2!
+//             .copyWith(fontWeight: FontWeight.w400, color: AppColors.white),
+//       ),
+//       onPressed: () {
+//         ShowCaseWidget.of(context)!.dismiss();
+//       },
+//     ),
+//   );
+// }
